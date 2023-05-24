@@ -17,14 +17,17 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var textView:TextView
     private val messageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
-            findViewById<TextView>(R.id.text_view_notification).text = intent.extras?.getString("message")
+            textView.text = intent.extras?.getString("message")
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        textView = findViewById(R.id.text_view_notification)
         findViewById<Button>(R.id.button_retrieve_token).setOnClickListener {
             if(checkGooglePlaySevices()){
                 FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -46,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             }
             val bundle = intent.extras
             if(bundle != null){
-                findViewById<TextView>(R.id.text_view_notification).text = bundle.getString("text")
+                textView.text = bundle.getString("text")
             }
         }
     }
